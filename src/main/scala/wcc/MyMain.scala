@@ -26,13 +26,15 @@ object MyMain {
 
     // Path to your CSV file
     val csvPath = "/home/z/IdeaProjects/idwcc-flink-new/data/test_graph.csv"
+    logger.warn("graph is loaded!!")
 
     // Read the CSV file
     val graph = CSVGraph.loadGraphDataset(env=env, graphFilePath = csvPath)
 
     val newGraph = DistributedWCC.run(graph, env)
 
-    logger.warn("graph is loaded!!")
+
+//    env.execute()
 //    graph.getEdges.map(edge => (edge.f0, edge.f1)).writeAsCsv("/home/z/idwcc-data/undirected.csv", "\n", ",", WriteMode.OVERWRITE) // Assign a short, descriptive name here
 
 

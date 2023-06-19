@@ -14,21 +14,27 @@ case object CSVGraph {
     // Make logger for this application
     val logger = LoggerFactory.getLogger(getClass.getName)
     logger.info("Starting loading graph..")
+
+    // Read a csv with 2 columns representing the edges
+    // Using a flatmap to create edge object along both directions
+
     val edges: DataSet[Edge[Long, NullValue]] = env
       .readCsvFile[(Long, Long)](
         filePath = graphFilePath,
-        fieldDelimiter = "\t"
+        fieldDelimiter = " "
       )
 //      .map(new MapFunction[(Long, Long), Edge[Long, NullValue]] {
 //        override def map(value: (Long, Long)): Edge[Long, NullValue] = new Edge(value._1, value._2, NullValue.getInstance())
 //      }).name("EdgeMap") // Assign a short, descriptive name here
           .flatMap(new FlatMapFunction[(Long, Long), Edge[Long, NullValue]] {
             override def flatMap(t: (Long, Long), collector: Collector[Edge[Long, NullValue]]): Unit = {
-              collector.collect(new Edge(t._1, t._2, NullValue.getInstance()))
-              collector.collect(new Edge(t._2, t._1, NullValue.getInstance()))
+              if (t._1 != t._2) {
+                collector.collect(new Edge(t._1, t._2, NullValue.getInstance()))
+                collector.collect(new Edge(t._2, t._1, NullValue.getInstance()))
+              }
             }
 
-          })
+          }).distinct()
 
 
     val graph: Graph[Long, NullValue, NullValue] = Graph.fromDataSet(edges, env)

@@ -9,9 +9,11 @@ class VertexMessage extends Serializable {
   var vt = 0
   var cId= -1L
   var cc = 0.0
+  var changed = false
 
-  def this(vId: Long, t: Int, vt: Int, cId: Long) {
+  def this(vId: Long, t: Int, vt: Int, cId: Long, changed: Boolean) {
     this()
+    this.changed = changed
     this.vId = vId
     this.cId = cId
     this.vt = vt
@@ -26,12 +28,19 @@ class VertexMessage extends Serializable {
     this.vId == this.cId
   }
 
+  def compareTo(vs: VertexMessage) = {
+    if (VertexMessage.ordering.lt(this, vs)) {
+      (this, vs)
+    } else {
+      (vs, this)
+    }
+  }
 }
 
 object VertexMessage {
 
   def create(vertexData: VertexData) = {
-    new VertexMessage(vertexData.vId, vertexData.t, vertexData.vt, vertexData.cId)
+    new VertexMessage(vertexData.vId, vertexData.t, vertexData.vt, vertexData.cId, vertexData.changed)
   }
 
   implicit val ordering: Ordering[VertexMessage] = Ordering.by({ data =>

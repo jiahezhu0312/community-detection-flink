@@ -10,7 +10,7 @@ import org.apache.flink.graph.Vertex
  * @param vt The number of vertices that form at least one triangle with x.
  */
 
-class VertexData(val vId: Long = -1L, val t: Int = 0, val vt: Int = 0) extends  Serializable {
+class VertexData(val vId: Long = -1L,  val t: Int = 0, val vt: Int = 0) extends  Serializable {
   var cId: Long = vId
 
   def cc: Double = {
@@ -43,6 +43,12 @@ class VertexData(val vId: Long = -1L, val t: Int = 0, val vt: Int = 0) extends  
     } else {
       (vs, this)
     }
+  }
+
+  def toTuple() = {
+//    (this.vId, this.t, this.vt, this.cc, this.cId, this.changed, this.neighbors.map(x=>x.vId))
+    (this.vId, this.cId)
+
   }
 
 }
