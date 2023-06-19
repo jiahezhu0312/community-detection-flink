@@ -52,7 +52,7 @@ object DistributedWCC {
 
     val communityMap = refinePartition(initGraph, vertexCount, env)
   }
-  //===========================================================Initial Partition============================================
+  //===========================================================Preprocessing============================================
   /*
     Compute triangle statistics and remove vertices do not close any triangles
    */
