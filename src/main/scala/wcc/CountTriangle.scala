@@ -98,7 +98,7 @@ object CountTriangle {
           msg.foreach(pair => vertexTriangleCount += pair._2._3)
         }
 
-        setNewVertexValue(new VertexCountData(vertex.getId, adjList = vertex.getValue.adjList, t = vertexTriangleCount / 2))
+        setNewVertexValue(new VertexCountData(vertex.getId, adjList = vertex.getValue.adjList, t = vertexTriangleCount/2))
       }
     }
   }
